@@ -4,6 +4,10 @@
 
 WithinReach Continuity is an AI-assisted technology dependency and continuity mapper for small community organizations — churches, nonprofits, student groups, and family businesses.
 
+## Demo Video
+
+[Watch the WithinReach Continuity demo](https://youtu.be/D3Y-yMP7bXE))
+
 ---
 
 ## The Problem
