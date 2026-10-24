@@ -6,7 +6,7 @@ WithinReach Continuity is an AI-assisted technology dependency and continuity ma
 
 ## Demo Video
 
-[Watch the WithinReach Continuity demo](https://youtu.be/D3Y-yMP7bXE))
+([Watch the WithinReach Continuity demo](https://youtu.be/D3Y-yMP7bXE))
 
 ---
 
