@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}{{ asset.name }} — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-detail-page">
+    <div class="wr-detail-header">
+        <hgroup>
+            <h1>{{ asset.name }}</h1>
+            <p>{{ category_label }} · {{ asset.criticality|capitalize }} criticality</p>
+        </hgroup>
+        <div class="wr-detail-actions">
+            <a href="/assets/{{ asset.id }}/edit" role="button" class="secondary">Edit</a>
+            <a href="/assets/{{ asset.id }}/delete" role="button" class="wr-danger">Delete</a>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="wr-flash wr-flash-error">{{ error }}</div>
+    {% endif %}
+
+    {% if asset.description %}
+    <p>{{ asset.description }}</p>
+    {% endif %}
+
+    <!-- Risk panel -->
+    <article class="wr-overall-risk wr-overall-{{ risk.risk_level }}">
+        <div class="wr-overall-head">
+            <span class="wr-overall-label">Risk Score</span>
+            <span class="wr-score">{{ risk.score }}</span>
+            <span class="wr-badge wr-badge-{{ risk.risk_level }}">{{ risk.risk_level|capitalize }}</span>
+        </div>
+        <ul class="wr-factor-list">
+            {% for f in risk.contributing_factors %}
+            <li>
+                <span class="wr-factor-label">{{ f.label }}</span>
+                <span class="wr-factor-points">+{{ f.points }}</span>
+                <span class="wr-factor-detail">{{ f.detail }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </article>
+
+    <!-- Responsibilities -->
+    <section class="wr-detail-section">
+        <h2>Responsibilities</h2>
+        {% if asset.responsibilities %}
+        <table class="wr-table">
+            <thead>
+                <tr><th>Primary Person</th><th>Responsibility</th><th>Backup</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for r in asset.responsibilities %}
+                <tr>
+                    <td><a href="/people/{{ r.primary_person.id }}">{{ r.primary_person.name }}</a></td>
+                    <td>{{ type_label(r.responsibility_type) }}</td>
+                    <td>
+                        {{ status_label(r.backup_status) }}
+                        {% if r.backup_people %}
+                        <br><span class="wr-muted">{{ r.backup_people | map(attribute='backup_person') | map(attribute='name') | join(', ') }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="/assets/{{ asset.id }}/responsibilities/{{ r.id }}/delete" class="wr-inline-form">
+                            <button type="submit" class="wr-link-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="wr-empty">No responsibilities recorded for this asset.</p>
+        {% endif %}
+
+        <!-- Add responsibility -->
+        <details class="wr-add-responsibility">
+            <summary>Add a responsibility</summary>
+            {% if all_people %}
+            <form method="post" action="/assets/{{ asset.id }}/responsibilities" class="wr-resp-form">
+                <label>Primary person
+                    <select name="primary_person_id" required>
+                        {% for p in all_people %}
+                        <option value="{{ p.id }}">{{ p.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Responsibility type
+                    <select name="responsibility_type" required>
+                        <option value="manages">Manages</option>
+                        <option value="understands">Understands</option>
+                        <option value="administers">Administers</option>
+                    </select>
+                </label>
+                <label>Backup status
+                    <select name="backup_status" class="wr-backup-status" required>
+                        <option value="backup_unknown">Backup unknown</option>
+                        <option value="no_backup">No backup</option>
+                        <option value="has_backup">Has backup</option>
+                    </select>
+                </label>
+                <label class="wr-backup-people" hidden>Backup people
+                    <select name="backup_person_ids" multiple size="4">
+                        {% for p in all_people %}
+                        <option value="{{ p.id }}">{{ p.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="wr-muted">The primary person cannot be their own backup.</small>
+                </label>
+                <button type="submit">Add Responsibility</button>
+            </form>
+            {% else %}
+            <p class="wr-muted">Add people first before assigning responsibilities.</p>
+            {% endif %}
+        </details>
+    </section>
+
+    <!-- Documentation -->
+    <section class="wr-detail-section">
+        <h2>Documentation</h2>
+        <form method="post" action="/assets/{{ asset.id }}/documentation" class="wr-mini-form">
+            <label>Does documentation exist?
+                <select name="status">
+                    {% set cur = asset.documentation.status if asset.documentation else 'unknown' %}
+                    <option value="yes" {{ "selected" if cur == 'yes' else "" }}>Yes</option>
+                    <option value="no" {{ "selected" if cur == 'no' else "" }}>No</option>
+                    <option value="unknown" {{ "selected" if cur == 'unknown' else "" }}>Unknown</option>
+                </select>
+            </label>
+            <label>Location note <span class="wr-optional">(optional)</span>
+                <input type="text" name="location_note" placeholder="e.g., Google Drive > IT folder"
+                    value="{{ (asset.documentation.location_note if asset.documentation else '') or '' }}">
+            </label>
+            <p class="wr-security-inline">Do not enter passwords, keys, access codes, or credentials.</p>
+            <button type="submit" class="secondary">Save Documentation</button>
+        </form>
+    </section>
+
+    <!-- Dependencies -->
+    <section class="wr-detail-section">
+        <h2>Dependencies</h2>
+        <form method="post" action="/assets/{{ asset.id }}/dependency" class="wr-mini-form">
+            {% set dep = asset.dependency %}
+            <label>
+                <input type="checkbox" name="personal_account" {{ "checked" if dep and dep.depends_on_personal_account else "" }}>
+                Depends on a personal account
+            </label>
+            <label>Personal-account note <span class="wr-optional">(optional)</span>
+                <input type="text" name="personal_account_note"
+                    placeholder="e.g., Domain registered using a volunteer's personal email"
+                    value="{{ (dep.personal_account_note if dep else '') or '' }}">
+            </label>
+            <label>
+                <input type="checkbox" name="single_device" {{ "checked" if dep and dep.depends_on_single_device else "" }}>
+                Depends on a single device
+            </label>
+            <label>Single-device note <span class="wr-optional">(optional)</span>
+                <input type="text" name="single_device_note"
+                    placeholder="e.g., Livestream relies on the sound-booth laptop"
+                    value="{{ (dep.single_device_note if dep else '') or '' }}">
+            </label>
+            <p class="wr-security-inline">Do not enter passwords, keys, access codes, or credentials.</p>
+            <button type="submit" class="secondary">Save Dependencies</button>
+        </form>
+    </section>
+
+    <a href="/assets">← Back to Assets</a>
+</section>
+
+<script>
+// Show the backup-people selector only when "Has backup" is chosen.
+document.querySelectorAll('.wr-resp-form').forEach(function (form) {
+    var status = form.querySelector('.wr-backup-status');
+    var people = form.querySelector('.wr-backup-people');
+    function sync() {
+        people.hidden = status.value !== 'has_backup';
+    }
+    status.addEventListener('change', sync);
+    sync();
+});
+</script>
+{% endblock %}

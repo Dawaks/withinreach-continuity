@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Set Up Your Organization — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-setup">
+    <hgroup>
+        <h1>Welcome to WithinReach Continuity</h1>
+        <p>Know what your organization depends on — before something breaks.</p>
+    </hgroup>
+
+    <p class="wr-lede">
+        Find hidden technology dependencies and single points of failure before
+        they become emergencies. Start by telling us about your organization.
+    </p>
+
+    {% if error %}
+    <div class="wr-flash wr-flash-error">{{ error }}</div>
+    {% endif %}
+
+    <article>
+        <form method="post" action="/setup">
+            <label for="name">
+                Organization name
+                <input type="text" id="name" name="name" placeholder="e.g., Grace Community Church" required>
+            </label>
+
+            <label for="org_type">
+                Organization type
+                <select id="org_type" name="org_type" required>
+                    <option value="church">Church</option>
+                    <option value="nonprofit">Nonprofit</option>
+                    <option value="student_org">Student Organization</option>
+                    <option value="family_business">Family Business</option>
+                    <option value="other">Other</option>
+                </select>
+            </label>
+
+            <label for="size">
+                Size <span class="wr-optional">(optional)</span>
+                <input type="text" id="size" name="size" placeholder="e.g., 200 members">
+            </label>
+
+            <label for="description">
+                Short description <span class="wr-optional">(optional)</span>
+                <textarea id="description" name="description" rows="3"
+                    placeholder="A sentence or two about your organization"></textarea>
+            </label>
+
+            <button type="submit">Get Started</button>
+        </form>
+    </article>
+
+    <article class="wr-demo-cta">
+        <p><strong>Want to explore first?</strong> Load the sample organization — Grace Community Church — with people, assets, and intentional continuity gaps to see how WithinReach works.</p>
+        <form method="post" action="/setup/load-demo">
+            <button type="submit" class="secondary">Load Demo Data</button>
+        </form>
+    </article>
+
+    <p class="wr-security-note">
+        WithinReach never needs your passwords, access codes, or credentials.
+    </p>
+</section>
+{% endblock %}

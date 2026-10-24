@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ "Edit" if asset and asset.id is defined else "Add" }} Asset — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-form-page">
+    <hgroup>
+        <h1>{{ "Edit Asset" if asset and asset.id is defined else "Add Asset" }}</h1>
+        <p>A technology or service your organization depends on.</p>
+    </hgroup>
+
+    {% if error %}
+    <div class="wr-flash wr-flash-error">{{ error }}</div>
+    {% endif %}
+
+    <article>
+        <form method="post" action="{{ form_action }}">
+            <label for="name">
+                Name <span class="wr-required">*</span>
+                <input type="text" id="name" name="name" required
+                    value="{{ (asset.name if asset else '') or '' }}">
+            </label>
+
+            <label for="category">
+                Category <span class="wr-required">*</span>
+                <select id="category" name="category" required>
+                    {% for value, label in categories %}
+                    <option value="{{ value }}" {{ "selected" if asset and asset.category == value else "" }}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label for="criticality">
+                Criticality <span class="wr-required">*</span>
+                <select id="criticality" name="criticality" required>
+                    {% for value in criticalities %}
+                    <option value="{{ value }}" {{ "selected" if asset and asset.criticality == value else ("selected" if not asset and value == 'medium' else "") }}>{{ value|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label for="description">
+                Description <span class="wr-optional">(optional)</span>
+                <textarea id="description" name="description" rows="3">{{ (asset.description if asset else '') or '' }}</textarea>
+            </label>
+
+            <div class="wr-form-actions">
+                <button type="submit">Save</button>
+                <a href="/assets" role="button" class="secondary">Cancel</a>
+            </div>
+        </form>
+    </article>
+</section>
+{% endblock %}

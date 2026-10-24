@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ asset.name }}? — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-confirm-page">
+    <hgroup>
+        <h1>Delete {{ asset.name }}?</h1>
+        <p>This cannot be undone. All records below will be removed with this asset.</p>
+    </hgroup>
+
+    <article class="wr-warning-card">
+        <h3>Records that will be removed</h3>
+        <ul>
+            <li>{{ asset.responsibilities | length }} responsibility record(s) and their backup associations</li>
+            <li>Documentation record</li>
+            <li>Dependency record</li>
+        </ul>
+        {% if asset.responsibilities %}
+        <p class="wr-muted">Responsibilities:</p>
+        <ul>
+            {% for r in asset.responsibilities %}
+            <li>{{ r.primary_person.name }} — {{ type_label(r.responsibility_type) }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </article>
+
+    <form method="post" action="/assets/{{ asset.id }}/delete" class="wr-form-actions">
+        <button type="submit" class="wr-danger">Delete {{ asset.name }}</button>
+        <a href="/assets/{{ asset.id }}" role="button" class="secondary">Cancel</a>
+    </form>
+</section>
+{% endblock %}

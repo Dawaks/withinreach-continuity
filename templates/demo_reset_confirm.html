@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Demo Data? — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-confirm-page">
+    <hgroup>
+        <h1>Reset demo data?</h1>
+        <p>This restores the sample Grace Community Church dataset.</p>
+    </hgroup>
+
+    <article class="wr-warning-card">
+        <h3>This will replace all current data</h3>
+        <p>Everything currently recorded will be removed and replaced with the
+        approved demo organization (4 people, 8 assets, and their relationships).
+        This cannot be undone.</p>
+    </article>
+
+    <form method="post" action="/demo/reset" class="wr-form-actions">
+        <button type="submit" class="wr-danger">Reset to Demo Data</button>
+        <a href="/dashboard" role="button" class="secondary">Cancel</a>
+    </form>
+</section>
+{% endblock %}

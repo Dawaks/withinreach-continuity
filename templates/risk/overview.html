@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Risks — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-risk-page">
+    <hgroup>
+        <h1>Continuity Risk Assessment</h1>
+        <p>Where your organization's technology dependencies are most fragile.</p>
+    </hgroup>
+
+    <article class="wr-overall-risk wr-overall-{{ org_risk.risk_level }}">
+        <div class="wr-overall-head">
+            <span class="wr-overall-label">Overall Risk</span>
+            <span class="wr-badge wr-badge-{{ org_risk.risk_level }}">{{ org_risk.risk_level|capitalize }}</span>
+        </div>
+        <p class="wr-overall-explanation">{{ org_risk.explanation }}</p>
+    </article>
+
+    <div class="wr-distribution">
+        {% for level in level_order %}
+        <div class="wr-dist-cell">
+            <span class="wr-dist-count wr-dist-{{ level }}">{{ org_risk.score_distribution[level] }}</span>
+            <span class="wr-dist-label">{{ level_labels[level] }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% for level in level_order %}
+        {% if grouped[level] %}
+        <section class="wr-risk-group">
+            <h2 class="wr-group-head wr-group-{{ level }}">{{ level_labels[level] }} <span class="wr-group-count">({{ grouped[level]|length }})</span></h2>
+            {% for r in grouped[level] %}
+            <details class="wr-risk-card">
+                <summary>
+                    <span class="wr-risk-name">{{ r.asset_name }}</span>
+                    <span class="wr-risk-meta">
+                        <span class="wr-score">{{ r.score }}</span>
+                        <span class="wr-badge wr-badge-{{ r.risk_level }}">{{ r.risk_level|capitalize }}</span>
+                    </span>
+                </summary>
+                <div class="wr-risk-detail">
+                    <p class="wr-muted">Contributing factors:</p>
+                    <ul class="wr-factor-list">
+                        {% for f in r.contributing_factors %}
+                        <li>
+                            <span class="wr-factor-label">{{ f.label }}</span>
+                            <span class="wr-factor-points">+{{ f.points }}</span>
+                            <span class="wr-factor-detail">{{ f.detail }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </details>
+            {% endfor %}
+        </section>
+        {% endif %}
+    {% endfor %}
+
+    <div class="wr-risk-actions">
+        <a href="/recommendations" role="button">Generate Recommendations</a>
+    </div>
+</section>
+{% endblock %}

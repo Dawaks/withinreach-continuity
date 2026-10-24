@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Preparing Review — Guided Discovery{% endblock %}
+
+{% block content %}
+<section class="wr-interview-collect">
+    <p>Preparing your review…</p>
+    <noscript>
+        <p class="wr-flash wr-flash-warning">JavaScript is required to assemble your interview answers.</p>
+    </noscript>
+
+    <form id="wr-collect-form" method="post" action="/interview/review">
+        <input type="hidden" name="answers_json" id="wr-answers-json" value="[]">
+    </form>
+</section>
+
+<script>
+(function () {
+    var answers = sessionStorage.getItem('wr_interview_answers') || '[]';
+    document.getElementById('wr-answers-json').value = answers;
+    document.getElementById('wr-collect-form').submit();
+})();
+</script>
+{% endblock %}

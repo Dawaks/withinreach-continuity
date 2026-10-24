@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — WithinReach Continuity{% endblock %}
+
+{% set org_type_labels = {
+    "church": "Church",
+    "nonprofit": "Nonprofit",
+    "student_org": "Student Organization",
+    "family_business": "Family Business",
+    "other": "Organization"
+} %}
+
+{% block content %}
+<section class="wr-hero">
+    <h1>Know what your organization depends on — before something breaks.</h1>
+    <p class="wr-lede">
+        Find hidden technology dependencies and single points of failure before
+        they become emergencies.
+    </p>
+</section>
+
+<section class="wr-dashboard">
+    <div class="wr-org-heading">
+        <h2>{{ organization.name }}</h2>
+        <span class="wr-pill">{{ org_type_labels.get(organization.org_type, "Organization") }}</span>
+        {% if organization.size %}<span class="wr-muted">{{ organization.size }}</span>{% endif %}
+    </div>
+
+    <div class="wr-stat-grid">
+        <article class="wr-stat-card">
+            <h3>{{ people_count }}</h3>
+            <p>People</p>
+        </article>
+        <article class="wr-stat-card">
+            <h3>{{ asset_count }}</h3>
+            <p>Technology Assets</p>
+        </article>
+        <article class="wr-stat-card">
+            <h3><span class="wr-badge wr-badge-{{ org_risk.risk_level }}">{{ org_risk.risk_level|capitalize }}</span></h3>
+            <p>Overall Risk</p>
+        </article>
+    </div>
+
+    <p class="wr-risk-explanation">{{ org_risk.explanation }}</p>
+
+    {% if top_risks %}
+    <section class="wr-top-risks">
+        <div class="wr-section-head">
+            <h3>Top Risks</h3>
+            <a href="/risk">View all risks →</a>
+        </div>
+        <ol class="wr-top-risk-list">
+            {% for r in top_risks %}
+            <li>
+                <a href="/assets/{{ r.asset_id }}" class="wr-top-risk-item">
+                    <div class="wr-top-risk-main">
+                        <strong>{{ r.asset_name }}</strong>
+                        <span class="wr-score">{{ r.score }}</span>
+                        <span class="wr-badge wr-badge-{{ r.risk_level }}">{{ r.risk_level|capitalize }}</span>
+                    </div>
+                    <span class="wr-top-risk-summary">{{ r.summary }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ol>
+    </section>
+    {% endif %}
+
+    <div class="wr-quick-actions">
+        <a href="/interview" role="button" class="wr-action-primary">Start Guided Discovery</a>
+        <a href="/people" role="button" class="secondary">Add Person</a>
+        <a href="/assets" role="button" class="secondary">Add Asset</a>
+    </div>
+
+    <div class="wr-nav-cards">
+        <a href="/people" class="wr-nav-card">
+            <strong>People</strong>
+            <span>Who is involved with your technology</span>
+        </a>
+        <a href="/assets" class="wr-nav-card">
+            <strong>Assets</strong>
+            <span>The technology and services you rely on</span>
+        </a>
+        <a href="/risk" class="wr-nav-card">
+            <strong>Risks</strong>
+            <span>Where your continuity gaps are</span>
+        </a>
+        <a href="/map" class="wr-nav-card">
+            <strong>Dependency Map</strong>
+            <span>See single points of failure at a glance</span>
+        </a>
+        <a href="/simulator" class="wr-nav-card">
+            <strong>What If</strong>
+            <span>What happens if someone is unavailable</span>
+        </a>
+        <a href="/recommendations" class="wr-nav-card">
+            <strong>Recommendations</strong>
+            <span>Practical steps to reduce risk</span>
+        </a>
+    </div>
+
+    <p class="wr-security-note">
+        WithinReach never needs your passwords, access codes, API keys, tokens, or recovery codes.
+    </p>
+
+    <p class="wr-demo-reset-link">
+        <a href="/demo/reset">Reset to demo data</a>
+        <span class="wr-muted">— restore the sample Grace Community Church organization.</span>
+    </p>
+</section>
+{% endblock %}

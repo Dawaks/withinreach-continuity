@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Guided Discovery — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-interview-intro">
+    <hgroup>
+        <h1>Let's uncover the technology your organization depends on.</h1>
+        <p>You don't need to know technical terms. We'll ask simple questions about who handles important technology and what happens if they're unavailable.</p>
+    </hgroup>
+
+    <article class="wr-security-callout">
+        <strong>Do not enter passwords, Wi-Fi passwords, access codes, API keys, tokens, or recovery codes.</strong>
+        <p>WithinReach never needs them. We only record who manages each system, not the credentials.</p>
+    </article>
+
+    <p class="wr-muted">
+        We'll walk through {{ category_count }} areas of technology, one at a time.
+        You can skip any area, and nothing is saved until you review and confirm.
+    </p>
+
+    <a href="/interview/category/0" role="button" class="wr-action-primary wr-start-interview">Start Guided Discovery</a>
+</section>
+
+<script>
+// Clear any previous interview answers when starting fresh.
+document.querySelector('.wr-start-interview').addEventListener('click', function () {
+    sessionStorage.removeItem('wr_interview_answers');
+});
+</script>
+{% endblock %}

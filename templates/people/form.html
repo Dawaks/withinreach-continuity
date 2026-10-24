@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ "Edit" if person and person.id is defined else "Add" }} Person — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-form-page">
+    <hgroup>
+        <h1>{{ "Edit Person" if person and person.id is defined else "Add Person" }}</h1>
+        <p>People are lightweight records — not login accounts.</p>
+    </hgroup>
+
+    {% if error %}
+    <div class="wr-flash wr-flash-error">{{ error }}</div>
+    {% endif %}
+
+    <article>
+        <form method="post" action="{{ form_action }}">
+            <label for="name">
+                Name <span class="wr-required">*</span>
+                <input type="text" id="name" name="name" required
+                    value="{{ (person.name if person else '') or '' }}">
+            </label>
+
+            <label for="role_title">
+                Role / Title <span class="wr-optional">(optional)</span>
+                <input type="text" id="role_title" name="role_title"
+                    placeholder="e.g., Technology Coordinator"
+                    value="{{ (person.role_title if person else '') or '' }}">
+            </label>
+
+            <label for="email">
+                Email <span class="wr-optional">(optional)</span>
+                <input type="email" id="email" name="email"
+                    placeholder="name@example.org"
+                    value="{{ (person.email if person else '') or '' }}">
+            </label>
+
+            <div class="wr-form-actions">
+                <button type="submit">Save</button>
+                <a href="/people" role="button" class="secondary">Cancel</a>
+            </div>
+        </form>
+    </article>
+</section>
+{% endblock %}

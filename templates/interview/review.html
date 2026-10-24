@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Review Proposed Records — Guided Discovery{% endblock %}
+
+{% block content %}
+<section class="wr-interview-review">
+    <hgroup>
+        <h1>Review Proposed Records</h1>
+        <p>Nothing is saved until you confirm. Edit, reject, or accept each item below.</p>
+    </hgroup>
+
+    {% if error %}
+    <div class="wr-flash wr-flash-error">{{ error }}</div>
+    {% endif %}
+
+    {% if not proposals %}
+    <p class="wr-empty">No records were proposed. You can
+        <a href="/interview">start the interview again</a> or add records manually.</p>
+    {% else %}
+    <form method="post" action="/interview/save" class="wr-review-form">
+        {% for p in proposals %}
+        {% set i = loop.index0 %}
+        <article class="wr-review-card">
+            <div class="wr-review-card-head">
+                <label class="wr-accept">
+                    <input type="checkbox" name="accept-{{ i }}" checked> Include this record
+                </label>
+                {% if p.category_label %}<span class="wr-muted">{{ p.category_label }}</span>{% endif %}
+            </div>
+
+            <!-- Asset -->
+            <div class="wr-review-grid">
+                <label>Asset name
+                    <input type="text" name="asset_name-{{ i }}" value="{{ p.asset_name }}">
+                </label>
+                <label>Category
+                    <input type="text" name="asset_category-{{ i }}" value="{{ p.asset_category }}" readonly>
+                </label>
+                <label>Criticality
+                    <select name="asset_criticality-{{ i }}">
+                        {% for c in ["critical", "high", "medium", "low"] %}
+                        <option value="{{ c }}" {{ "selected" if p.asset_criticality == c else "" }}>{{ c|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            {% if p.asset_existing_id %}
+            <fieldset class="wr-dup-choice">
+                <legend>An asset named "{{ p.asset_existing_name }}" already exists.</legend>
+                <label><input type="radio" name="asset_choice-{{ i }}" value="existing" checked> Use existing asset</label>
+                <label><input type="radio" name="asset_choice-{{ i }}" value="new"> Create new asset</label>
+                <input type="hidden" name="asset_existing_id-{{ i }}" value="{{ p.asset_existing_id }}">
+            </fieldset>
+            {% else %}
+            <input type="hidden" name="asset_choice-{{ i }}" value="new">
+            {% endif %}
+
+            <!-- Primary person -->
+            <div class="wr-review-grid">
+                <label>Primary person
+                    <input type="text" name="primary_person_name-{{ i }}" value="{{ p.primary_person_name }}">
+                </label>
+                <label>Role / title
+                    <input type="text" name="primary_person_role-{{ i }}" value="{{ p.primary_person_role }}">
+                </label>
+                <label>Responsibility
+                    <select name="responsibility_type-{{ i }}">
+                        {% for t in ["manages", "understands", "administers"] %}
+                        <option value="{{ t }}" {{ "selected" if p.responsibility_type == t else "" }}>{{ t|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            {% if p.primary_existing_id %}
+            <fieldset class="wr-dup-choice">
+                <legend>A person named "{{ p.primary_person_name }}" already exists.</legend>
+                <label><input type="radio" name="primary_choice-{{ i }}" value="existing" checked> Use existing {{ p.primary_person_name }}</label>
+                <label><input type="radio" name="primary_choice-{{ i }}" value="new"> Create new person</label>
+                <input type="hidden" name="primary_existing_id-{{ i }}" value="{{ p.primary_existing_id }}">
+            </fieldset>
+            {% else %}
+            <input type="hidden" name="primary_choice-{{ i }}" value="new">
+            {% endif %}
+
+            <!-- Backup -->
+            <div class="wr-review-grid">
+                <label>Backup status
+                    <select name="backup_status-{{ i }}">
+                        {% for s in ["has_backup", "no_backup", "backup_unknown"] %}
+                        <option value="{{ s }}" {{ "selected" if p.backup_status == s else "" }}>{{ s.replace('_', ' ')|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Backup person (if any)
+                    <input type="text" name="backup_person_name-{{ i }}" value="{{ p.backup_person_name }}">
+                </label>
+            </div>
+
+            {% if p.backup_existing_id %}
+            <fieldset class="wr-dup-choice">
+                <legend>A person named "{{ p.backup_person_name }}" already exists.</legend>
+                <label><input type="radio" name="backup_choice-{{ i }}" value="existing" checked> Use existing</label>
+                <label><input type="radio" name="backup_choice-{{ i }}" value="new"> Create new person</label>
+                <input type="hidden" name="backup_existing_id-{{ i }}" value="{{ p.backup_existing_id }}">
+            </fieldset>
+            {% else %}
+            <input type="hidden" name="backup_choice-{{ i }}" value="new">
+            {% endif %}
+
+            <!-- Documentation -->
+            <div class="wr-review-grid">
+                <label>Documentation
+                    <select name="documentation_status-{{ i }}">
+                        {% for d in ["yes", "no", "unknown"] %}
+                        <option value="{{ d }}" {{ "selected" if p.documentation_status == d else "" }}>{{ d|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Documentation location
+                    <input type="text" name="documentation_location-{{ i }}" value="{{ p.documentation_location }}">
+                </label>
+            </div>
+
+            <!-- Dependencies -->
+            <div class="wr-review-grid">
+                <label class="wr-check">
+                    <input type="checkbox" name="depends_on_personal_account-{{ i }}" {{ "checked" if p.depends_on_personal_account else "" }}>
+                    Depends on a personal account
+                </label>
+                <label>Personal-account note
+                    <input type="text" name="personal_account_note-{{ i }}" placeholder="optional">
+                </label>
+                <label class="wr-check">
+                    <input type="checkbox" name="depends_on_single_device-{{ i }}" {{ "checked" if p.depends_on_single_device else "" }}>
+                    Depends on a single device
+                </label>
+                <label>Single-device note
+                    <input type="text" name="single_device_note-{{ i }}" placeholder="optional">
+                </label>
+            </div>
+
+            <p class="wr-security-inline">Do not enter passwords, keys, access codes, or credentials in any field.</p>
+        </article>
+        {% endfor %}
+
+        <div class="wr-form-actions">
+            <button type="submit">Save Confirmed Records</button>
+            <a href="/interview" role="button" class="secondary">Back to Interview</a>
+        </div>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}

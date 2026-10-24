@@ -1,0 +1,1214 @@
+/* WithinReach Continuity — custom styles layered on Pico CSS */
+
+:root {
+    --wr-critical: #d32f2f;
+    --wr-high: #f57c00;
+    --wr-medium: #f9a825;
+    --wr-low: #388e3c;
+    --wr-pending: #607d8b;
+    --wr-accent: #2563eb;
+    --wr-accent-dark: #1d4ed8;
+}
+
+body {
+    --pico-font-size: 100%;
+}
+
+/* ---------- Header & navigation ---------- */
+.wr-header {
+    border-bottom: 1px solid var(--pico-muted-border-color);
+    margin-bottom: 1.5rem;
+    background: var(--pico-card-background-color);
+}
+
+.wr-header-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.wr-brand-block {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.wr-brand {
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--pico-contrast);
+}
+
+.wr-brand span {
+    color: var(--wr-accent);
+}
+
+.wr-org-name {
+    color: var(--pico-muted-color);
+    font-size: 0.85rem;
+}
+
+.wr-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
+}
+
+.wr-nav a {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--pico-border-radius);
+    text-decoration: none;
+    color: var(--pico-muted-color);
+}
+
+.wr-nav a:hover {
+    background: var(--pico-secondary-background);
+    color: var(--pico-contrast);
+}
+
+.wr-nav a.active {
+    background: var(--wr-accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ---------- Hero / messaging ---------- */
+.wr-hero {
+    margin-bottom: 1.5rem;
+}
+
+.wr-hero h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+}
+
+.wr-lede {
+    color: var(--pico-muted-color);
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+/* ---------- Org heading ---------- */
+.wr-org-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.wr-org-heading h2 {
+    margin: 0;
+}
+
+.wr-pill {
+    background: var(--pico-secondary-background);
+    color: var(--pico-secondary-inverse);
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.wr-muted {
+    color: var(--pico-muted-color);
+    font-size: 0.9rem;
+}
+
+/* ---------- Stat cards ---------- */
+.wr-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.wr-stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 0;
+}
+
+.wr-stat-card h3 {
+    margin: 0 0 0.3rem 0;
+    font-size: 2.4rem;
+    line-height: 1;
+}
+
+.wr-stat-card p {
+    margin: 0;
+    color: var(--pico-muted-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.78rem;
+}
+
+/* ---------- Quick actions ---------- */
+.wr-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.wr-quick-actions a[role="button"] {
+    margin: 0;
+    width: auto;
+}
+
+.wr-action-primary {
+    background: var(--wr-accent);
+    border-color: var(--wr-accent);
+}
+
+.wr-action-primary:hover {
+    background: var(--wr-accent-dark);
+    border-color: var(--wr-accent-dark);
+}
+
+/* ---------- Navigation cards ---------- */
+.wr-nav-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
+    margin: 1.5rem 0;
+}
+
+.wr-nav-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    text-decoration: none;
+    color: var(--pico-color);
+    background: var(--pico-card-background-color);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.wr-nav-card:hover {
+    border-color: var(--wr-accent);
+    transform: translateY(-2px);
+}
+
+.wr-nav-card strong {
+    font-size: 1.05rem;
+}
+
+.wr-nav-card span {
+    color: var(--pico-muted-color);
+    font-size: 0.85rem;
+}
+
+/* ---------- Badges ---------- */
+.wr-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    line-height: 1.4;
+}
+
+.wr-badge-critical { background: var(--wr-critical); }
+.wr-badge-high { background: var(--wr-high); }
+.wr-badge-medium { background: var(--wr-medium); color: #222; }
+.wr-badge-low { background: var(--wr-low); }
+.wr-badge-pending { background: var(--wr-pending); }
+
+/* ---------- Tables (people list) ---------- */
+.wr-list-header {
+    margin-bottom: 1rem;
+}
+
+.wr-table {
+    width: 100%;
+}
+
+.wr-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--pico-muted-color);
+}
+
+/* ---------- Asset cards ---------- */
+.wr-asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.85rem;
+}
+
+.wr-asset-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    text-decoration: none;
+    color: var(--pico-color);
+    background: var(--pico-card-background-color);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.wr-asset-card:hover {
+    border-color: var(--wr-accent);
+    transform: translateY(-2px);
+}
+
+.wr-asset-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.wr-category {
+    color: var(--pico-muted-color);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.wr-asset-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--pico-muted-color);
+}
+
+/* ---------- Setup page ---------- */
+.wr-setup {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.wr-optional {
+    color: var(--pico-muted-color);
+    font-weight: 400;
+    font-size: 0.85rem;
+}
+
+.wr-demo-cta {
+    background: var(--pico-secondary-background);
+}
+
+.wr-demo-cta button {
+    margin-bottom: 0;
+}
+
+/* ---------- Placeholder page ---------- */
+.wr-placeholder-card {
+    text-align: center;
+    padding: 2rem;
+}
+
+/* ---------- Flash messages ---------- */
+.wr-flash {
+    padding: 0.75rem 1rem;
+    border-radius: var(--pico-border-radius);
+    margin-bottom: 1rem;
+}
+
+.wr-flash-success { background: #e8f5e9; color: #1b5e20; }
+.wr-flash-warning { background: #fff8e1; color: #e65100; }
+.wr-flash-error { background: #ffebee; color: #b71c1c; }
+
+/* ---------- Misc ---------- */
+.wr-empty {
+    color: var(--pico-muted-color);
+    font-style: italic;
+    padding: 2rem 0;
+}
+
+.wr-security-note {
+    margin-top: 2rem;
+    padding: 0.75rem 1rem;
+    background: var(--pico-secondary-background);
+    border-radius: var(--pico-border-radius);
+    color: var(--pico-muted-color);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.wr-footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+    color: var(--pico-muted-color);
+    text-align: center;
+}
+
+/* ---------- Dashboard risk explanation & top risks ---------- */
+.wr-risk-explanation {
+    color: var(--pico-muted-color);
+    margin: -0.5rem 0 1.5rem 0;
+}
+
+.wr-top-risks {
+    margin: 1.5rem 0;
+}
+
+.wr-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.wr-section-head h3 {
+    margin: 0;
+}
+
+.wr-top-risk-list {
+    list-style: none;
+    counter-reset: risk;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.wr-top-risk-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    text-decoration: none;
+    color: var(--pico-color);
+    background: var(--pico-card-background-color);
+}
+
+.wr-top-risk-item:hover {
+    border-color: var(--wr-accent);
+}
+
+.wr-top-risk-main {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.wr-top-risk-main strong {
+    flex: 1;
+}
+
+.wr-top-risk-summary {
+    color: var(--pico-muted-color);
+    font-size: 0.88rem;
+}
+
+.wr-score {
+    font-weight: 700;
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Risk overview page ---------- */
+.wr-overall-risk {
+    padding: 1.25rem 1.5rem;
+    border-left: 5px solid var(--wr-pending);
+    margin-bottom: 1.5rem;
+}
+
+.wr-overall-critical { border-left-color: var(--wr-critical); }
+.wr-overall-high { border-left-color: var(--wr-high); }
+.wr-overall-medium { border-left-color: var(--wr-medium); }
+.wr-overall-low { border-left-color: var(--wr-low); }
+
+.wr-overall-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.wr-overall-label {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    color: var(--pico-muted-color);
+}
+
+.wr-overall-explanation {
+    margin: 0;
+}
+
+.wr-distribution {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.wr-dist-cell {
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+}
+
+.wr-dist-count {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.wr-dist-critical { color: var(--wr-critical); }
+.wr-dist-high { color: var(--wr-high); }
+.wr-dist-medium { color: var(--wr-medium); }
+.wr-dist-low { color: var(--wr-low); }
+
+.wr-dist-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--pico-muted-color);
+}
+
+.wr-risk-group {
+    margin-bottom: 1.5rem;
+}
+
+.wr-group-head {
+    font-size: 1.1rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--pico-muted-border-color);
+}
+
+.wr-group-critical { border-bottom-color: var(--wr-critical); }
+.wr-group-high { border-bottom-color: var(--wr-high); }
+.wr-group-medium { border-bottom-color: var(--wr-medium); }
+.wr-group-low { border-bottom-color: var(--wr-low); }
+
+.wr-group-count {
+    color: var(--pico-muted-color);
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.wr-risk-card {
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    margin-bottom: 0.6rem;
+    padding: 0.5rem 1rem;
+}
+
+.wr-risk-card summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+.wr-risk-name {
+    font-weight: 600;
+}
+
+.wr-risk-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.wr-risk-detail {
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+}
+
+.wr-factor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.wr-factor-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.15rem 0.75rem;
+    align-items: baseline;
+}
+
+.wr-factor-label {
+    font-weight: 600;
+}
+
+.wr-factor-points {
+    font-variant-numeric: tabular-nums;
+    color: var(--wr-high);
+    font-weight: 600;
+}
+
+.wr-factor-detail {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    color: var(--pico-muted-color);
+}
+
+.wr-risk-actions {
+    margin-top: 2rem;
+}
+
+.wr-risk-actions a[role="button"] {
+    width: auto;
+}
+
+/* ---------- List header with action button ---------- */
+.wr-list-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.wr-list-header a[role="button"] {
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* ---------- Forms ---------- */
+.wr-form-page {
+    max-width: 640px;
+}
+
+.wr-required {
+    color: var(--wr-critical);
+}
+
+.wr-form-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0;
+}
+
+.wr-form-actions button,
+.wr-form-actions a[role="button"] {
+    width: auto;
+    margin: 0;
+}
+
+/* ---------- Detail pages ---------- */
+.wr-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.wr-detail-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.wr-detail-actions a[role="button"] {
+    width: auto;
+    margin: 0;
+}
+
+.wr-detail-section {
+    margin: 1.75rem 0;
+}
+
+.wr-detail-section h2 {
+    font-size: 1.15rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--pico-muted-border-color);
+}
+
+.wr-asset-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ---------- SPOF warning ---------- */
+.wr-spof-warning {
+    border-left: 5px solid var(--wr-critical);
+    background: #fff5f5;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+}
+
+.wr-spof-warning strong {
+    color: var(--wr-critical);
+}
+
+/* ---------- Danger buttons / links ---------- */
+.wr-danger {
+    background: var(--wr-critical);
+    border-color: var(--wr-critical);
+}
+
+.wr-danger:hover {
+    background: #b71c1c;
+    border-color: #b71c1c;
+}
+
+.wr-link-danger {
+    background: none;
+    border: none;
+    color: var(--wr-critical);
+    padding: 0;
+    width: auto;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.wr-inline-form {
+    display: inline;
+    margin: 0;
+}
+
+/* ---------- Confirm pages ---------- */
+.wr-confirm-page {
+    max-width: 680px;
+}
+
+.wr-warning-card {
+    border-left: 5px solid var(--wr-high);
+    background: #fffaf0;
+    padding: 1rem 1.25rem;
+}
+
+.wr-warning-card h3 {
+    font-size: 1rem;
+    margin-top: 0.75rem;
+}
+
+.wr-warning-card h3:first-child {
+    margin-top: 0;
+}
+
+/* ---------- Mini forms (documentation, dependency, add responsibility) ---------- */
+.wr-mini-form,
+.wr-resp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 560px;
+}
+
+.wr-mini-form button,
+.wr-resp-form button {
+    width: auto;
+    margin: 0;
+    align-self: flex-start;
+}
+
+.wr-add-responsibility {
+    margin-top: 1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    padding: 0.5rem 1rem;
+}
+
+.wr-add-responsibility summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.wr-resp-form {
+    margin-top: 1rem;
+}
+
+/* ---------- Inline security note ---------- */
+.wr-security-inline {
+    font-size: 0.82rem;
+    color: var(--wr-high);
+    margin: 0;
+}
+
+/* ---------- What If simulator ---------- */
+.wr-sim-control {
+    padding: 1.25rem 1.5rem;
+}
+
+.wr-sim-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.wr-sim-form label {
+    flex: 1;
+    min-width: 240px;
+    margin: 0;
+}
+
+.wr-sim-form button {
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.wr-sim-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    margin: 1.5rem 0;
+    background: var(--pico-card-background-color);
+}
+
+.wr-sim-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.wr-sim-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--pico-muted-color);
+}
+
+.wr-sim-arrow {
+    font-size: 1.6rem;
+    color: var(--pico-muted-color);
+}
+
+.wr-sim-count {
+    font-size: 1.05rem;
+    margin: 1rem 0 1.5rem 0;
+}
+
+.wr-sim-group {
+    margin-bottom: 1.75rem;
+}
+
+.wr-sim-group-head {
+    font-size: 1.1rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--pico-muted-border-color);
+}
+
+.wr-sim-orphaned { border-bottom-color: var(--wr-critical); color: var(--wr-critical); }
+.wr-sim-partially_affected { border-bottom-color: var(--wr-high); color: var(--wr-high); }
+.wr-sim-unaffected { border-bottom-color: var(--wr-low); color: var(--wr-low); }
+
+.wr-sim-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0.85rem;
+    margin-top: 0.85rem;
+}
+
+.wr-sim-card {
+    border: 1px solid var(--pico-muted-border-color);
+    border-left-width: 5px;
+    border-radius: var(--pico-border-radius);
+    padding: 1rem 1.1rem;
+}
+
+.wr-sim-card-orphaned { border-left-color: var(--wr-critical); background: #fff5f5; }
+.wr-sim-card-partially_affected { border-left-color: var(--wr-high); background: #fffaf0; }
+.wr-sim-card-unaffected { border-left-color: var(--wr-low); background: #f3faf4; }
+
+.wr-sim-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.wr-sim-card-head a {
+    text-decoration: none;
+}
+
+.wr-sim-explanation {
+    margin: 0 0 0.6rem 0;
+}
+
+.wr-sim-detail {
+    font-size: 0.85rem;
+    margin: 0.2rem 0;
+    color: var(--pico-muted-color);
+}
+
+.wr-sim-scores {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.wr-sim-arrow-sm {
+    color: var(--pico-muted-color);
+}
+
+/* ---------- Dependency map ---------- */
+.wr-map-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .wr-map-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.wr-cy {
+    width: 100%;
+    height: 560px;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    background:
+        radial-gradient(circle, #f4f6f8 1px, transparent 1px) 0 0 / 22px 22px,
+        var(--pico-card-background-color);
+}
+
+/* Legend */
+.wr-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 0.85rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    font-size: 0.82rem;
+}
+
+.wr-legend-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.wr-legend-group strong {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--pico-muted-color);
+}
+
+.wr-legend-group span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.wr-legend-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #2563eb; display: inline-block;
+}
+.wr-legend-sq {
+    width: 16px; height: 12px; border-radius: 3px;
+    background: #fff; border: 2px solid var(--wr-critical); display: inline-block;
+}
+.wr-legend-bar {
+    width: 16px; height: 8px; border-radius: 2px;
+    background: #eceff1; border: 1px solid #b0bec5; display: inline-block;
+}
+.wr-legend-line {
+    width: 22px; height: 0; border-top: 3px solid #555; display: inline-block;
+}
+.wr-legend-dashed { border-top-style: dashed; border-top-color: #388e3c; }
+.wr-legend-solid { border-top-style: solid; }
+.wr-color-critical { border-top-color: var(--wr-critical); }
+.wr-color-medium { border-top-color: var(--wr-medium); }
+.wr-color-low { border-top-color: var(--wr-low); }
+
+.wr-legend-note {
+    flex-basis: 100%;
+    margin: 0;
+    color: var(--pico-muted-color);
+    font-size: 0.8rem;
+}
+
+/* SPOF side panel */
+.wr-map-side h2 {
+    font-size: 1.1rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--wr-critical);
+}
+
+.wr-spof-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.wr-spof-item {
+    border: 1px solid var(--pico-muted-border-color);
+    border-left: 4px solid var(--wr-high);
+    border-radius: var(--pico-border-radius);
+    padding: 0.75rem 0.9rem;
+}
+
+.wr-spof-item:first-child {
+    border-left-color: var(--wr-critical);
+}
+
+.wr-spof-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+}
+
+.wr-spof-stats {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    margin: 0.35rem 0;
+}
+
+.wr-spof-uncovered {
+    color: var(--wr-critical);
+    font-weight: 600;
+}
+
+.wr-spof-assets {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+}
+
+.wr-spof-assets li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.wr-spof-assets .wr-badge {
+    font-size: 0.72rem;
+    padding: 0.1rem 0.5rem;
+}
+
+/* Tooltip */
+.wr-cy-tooltip {
+    position: absolute;
+    z-index: 1000;
+    background: #222;
+    color: #fff;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    max-width: 240px;
+    line-height: 1.35;
+}
+
+/* ---------- Guided discovery interview ---------- */
+.wr-interview-intro,
+.wr-interview-category,
+.wr-interview-review {
+    max-width: 760px;
+}
+
+.wr-security-callout {
+    border-left: 5px solid var(--wr-high);
+    background: #fffaf0;
+    padding: 1rem 1.25rem;
+}
+
+.wr-security-callout strong {
+    color: var(--wr-high);
+}
+
+.wr-security-callout p {
+    margin: 0.4rem 0 0 0;
+}
+
+.wr-start-interview {
+    width: auto;
+    display: inline-block;
+}
+
+.wr-interview-progress {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--pico-muted-color);
+    font-weight: 600;
+}
+
+.wr-interview-nav {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.wr-interview-nav button {
+    width: auto;
+    margin: 0;
+}
+
+#wr-next {
+    margin-left: auto;
+}
+
+/* Review cards */
+.wr-review-card {
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.wr-review-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.wr-accept {
+    font-weight: 600;
+    margin: 0;
+}
+
+.wr-review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem 1rem;
+}
+
+.wr-review-grid label {
+    margin: 0;
+}
+
+.wr-check {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.wr-dup-choice {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: var(--pico-border-radius);
+    padding: 0.6rem 0.9rem;
+    margin: 0.6rem 0;
+}
+
+.wr-dup-choice legend {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e65100;
+}
+
+.wr-dup-choice label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-right: 1.25rem;
+    font-size: 0.9rem;
+}
+
+/* ---------- Recommendations ---------- */
+.wr-recs-generate {
+    margin: 1rem 0;
+}
+
+.wr-recs-generate button {
+    width: auto;
+    margin: 0;
+}
+
+.wr-recs-mode {
+    margin-bottom: 1rem;
+}
+
+.wr-pill-ai {
+    background: var(--wr-accent);
+    color: #fff;
+}
+
+.wr-recs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.wr-rec-card {
+    border: 1px solid var(--pico-muted-border-color);
+    border-left-width: 5px;
+    border-radius: var(--pico-border-radius);
+    padding: 1rem 1.1rem;
+}
+
+.wr-rec-critical { border-left-color: var(--wr-critical); }
+.wr-rec-high { border-left-color: var(--wr-high); }
+.wr-rec-medium { border-left-color: var(--wr-medium); }
+.wr-rec-low { border-left-color: var(--wr-low); }
+
+.wr-rec-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.wr-rec-asset {
+    font-weight: 700;
+    text-decoration: none;
+    pointer-events: none;
+    color: var(--pico-color);
+}
+
+.wr-rec-risk,
+.wr-rec-action,
+.wr-rec-rationale {
+    margin: 0.3rem 0;
+}
+
+.wr-rec-action {
+    font-weight: 600;
+}
+
+/* ---------- Demo reset link ---------- */
+.wr-demo-reset-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}

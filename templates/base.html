@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WithinReach Continuity{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+    <header class="wr-header">
+        <div class="wr-header-inner">
+            <div class="wr-brand-block">
+                <a href="/dashboard" class="wr-brand">WithinReach <span>Continuity</span></a>
+                {% if organization %}
+                <span class="wr-org-name">{{ organization.name }}</span>
+                {% endif %}
+            </div>
+            {% if organization %}
+            <nav class="wr-nav">
+                <a href="/dashboard" class="{% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
+                <a href="/interview" class="{% if active == 'interview' %}active{% endif %}">Guided Discovery</a>
+                <a href="/people" class="{% if active == 'people' %}active{% endif %}">People</a>
+                <a href="/assets" class="{% if active == 'assets' %}active{% endif %}">Assets</a>
+                <a href="/risk" class="{% if active == 'risk' %}active{% endif %}">Risks</a>
+                <a href="/map" class="{% if active == 'map' %}active{% endif %}">Dependency Map</a>
+                <a href="/simulator" class="{% if active == 'simulator' %}active{% endif %}">What If</a>
+                <a href="/recommendations" class="{% if active == 'recommendations' %}active{% endif %}">Recommendations</a>
+            </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="container">
+        {% if flash_messages %}
+            {% for category, message in flash_messages %}
+            <div class="wr-flash wr-flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="container wr-footer">
+        <small>WithinReach never needs your passwords, access codes, API keys, tokens, or recovery codes.</small>
+    </footer>
+</body>
+</html>

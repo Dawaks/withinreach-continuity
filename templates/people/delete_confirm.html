@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ person.name }}? — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-confirm-page">
+    <hgroup>
+        <h1>Delete {{ person.name }}?</h1>
+        <p>This cannot be undone. Review what would be affected before confirming.</p>
+    </hgroup>
+
+    {% if impact.primary or impact.backups %}
+    <article class="wr-warning-card">
+        {% if impact.primary %}
+        <h3>Primary responsibilities that would be removed</h3>
+        <ul>
+            {% for p in impact.primary %}
+            <li>{{ p.asset_name }} — {{ type_label(p.responsibility_type) }} ({{ p.backup_status.replace('_', ' ') }})</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if impact.backups %}
+        <h3>Backup roles that would be removed</h3>
+        <ul>
+            {% for b in impact.backups %}
+            <li>{{ b.asset_name }} — backup for {{ b.primary_person_name }}'s {{ type_label(b.responsibility_type) }} responsibility</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </article>
+    {% else %}
+    <p class="wr-muted">{{ person.name }} has no responsibilities or backup roles.</p>
+    {% endif %}
+
+    <form method="post" action="/people/{{ person.id }}/delete" class="wr-form-actions">
+        <button type="submit" class="wr-danger">Delete {{ person.name }}</button>
+        <a href="/people/{{ person.id }}" role="button" class="secondary">Cancel</a>
+    </form>
+</section>
+{% endblock %}

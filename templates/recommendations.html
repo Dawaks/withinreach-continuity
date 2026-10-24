@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-recs-page">
+    <hgroup>
+        <h1>Continuity Recommendations</h1>
+        <p>Prioritized actions to reduce your organization's technology dependency risks.</p>
+    </hgroup>
+
+    <form method="post" action="/recommendations" class="wr-recs-generate">
+        <button type="submit">Generate Recommendations</button>
+    </form>
+
+    {% if recommendations is not none %}
+        <div class="wr-recs-mode">
+            {% if mode == "ai" %}
+            <span class="wr-pill wr-pill-ai">AI-assisted</span>
+            {% else %}
+            <span class="wr-pill">Rule-based fallback</span>
+            {% endif %}
+        </div>
+
+        {% if recommendations %}
+        <div class="wr-recs-list">
+            {% for r in recommendations %}
+            <article class="wr-rec-card wr-rec-{{ r.priority }}">
+                <div class="wr-rec-head">
+                    <span class="wr-badge wr-badge-{{ r.priority }}">{{ r.priority|capitalize }}</span>
+                    <a href="#" class="wr-rec-asset">{{ r.asset_name }}</a>
+                    {% if r.person_name %}<span class="wr-muted">· {{ r.person_name }}</span>{% endif %}
+                </div>
+                <p class="wr-rec-risk"><strong>Risk:</strong> {{ r.risk_description }}</p>
+                <p class="wr-rec-action">{{ r.recommendation }}</p>
+                <p class="wr-rec-rationale wr-muted">{{ r.rationale }}</p>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="wr-empty">No risks detected — your organization's technology dependencies are well-covered.</p>
+        {% endif %}
+    {% else %}
+        <p class="wr-muted">Click "Generate Recommendations" to see prioritized actions based on your current continuity risks.</p>
+    {% endif %}
+</section>
+{% endblock %}

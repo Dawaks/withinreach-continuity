@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.label }} — Guided Discovery{% endblock %}
+
+{% block content %}
+<section class="wr-interview-category"
+         data-index="{{ index }}"
+         data-category-key="{{ category.key }}"
+         data-is-last="{{ 'true' if is_last else 'false' }}"
+         data-category-count="{{ category_count }}">
+    <p class="wr-interview-progress">Step {{ step_number }} of {{ category_count }} — {{ category.label }}</p>
+
+    <form id="wr-category-form" class="wr-interview-form">
+        <fieldset>
+            <label>Does your organization use <strong>{{ category.label }}</strong>?
+                <select name="uses" id="wr-uses">
+                    <option value="">Choose…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="skip">Skip for now</option>
+                </select>
+            </label>
+        </fieldset>
+
+        <div id="wr-detail-questions" hidden>
+            <fieldset>
+                <label>What do you call this system or service?
+                    <input type="text" name="asset_name" placeholder="e.g., Sunday Livestream">
+                </label>
+                <label>Who normally handles it?
+                    <input type="text" name="person_name" placeholder="e.g., Dami">
+                </label>
+                <label>What is that person's role?
+                    <input type="text" name="role_title" placeholder="e.g., Technology Coordinator">
+                </label>
+                <label>What do they do with it?
+                    <select name="responsibility_type">
+                        <option value="manages">Manages (operates / runs it)</option>
+                        <option value="understands">Understands (knows how it works)</option>
+                        <option value="administers">Administers (admin access / settings)</option>
+                    </select>
+                </label>
+                <label>If that person were unavailable tomorrow, could someone else perform the task?
+                    <select name="backup" id="wr-backup">
+                        <option value="not_sure">Not sure</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </label>
+                <label id="wr-backup-name-label" hidden>Who could fill in?
+                    <input type="text" name="backup_person_name" placeholder="e.g., Sarah">
+                </label>
+                <label>Is there documentation explaining how this works?
+                    <select name="docs" id="wr-docs">
+                        <option value="not_sure">Not sure</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </label>
+                <label id="wr-doc-location-label" hidden>Where is the documentation located?
+                    <input type="text" name="doc_location" placeholder="e.g., Google Drive > IT folder">
+                    <small class="wr-security-inline">Do not enter passwords, keys, or access codes.</small>
+                </label>
+                <label>Does this rely on one particular device?
+                    <select name="single_device">
+                        <option value="not_sure">Not sure</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </label>
+                <label>Does it use an organization-owned account or depend on someone's personal account?
+                    <select name="account">
+                        <option value="not_sure">Not sure</option>
+                        <option value="org">Organization-owned</option>
+                        <option value="personal">Personal account</option>
+                    </select>
+                </label>
+            </fieldset>
+        </div>
+
+        <div class="wr-interview-nav">
+            <button type="button" id="wr-back" class="secondary">Back</button>
+            <button type="button" id="wr-skip" class="secondary">Skip</button>
+            <button type="button" id="wr-next">{{ "Review" if is_last else "Next" }}</button>
+        </div>
+    </form>
+</section>
+
+<script src="{{ url_for('static', path='js/interview.js') }}"></script>
+{% endblock %}

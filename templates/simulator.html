@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}What If Simulator — WithinReach Continuity{% endblock %}
+
+{% set class_labels = {
+    "orphaned": "Orphaned",
+    "partially_affected": "Partially Affected",
+    "unaffected": "Covered"
+} %}
+
+{% block content %}
+<section class="wr-simulator-page">
+    <hgroup>
+        <h1>What happens if someone is unavailable?</h1>
+        <p>See which technology services would be affected before an absence becomes an emergency.</p>
+    </hgroup>
+
+    {% if error %}
+    <div class="wr-flash wr-flash-error">{{ error }}</div>
+    {% endif %}
+
+    <article class="wr-sim-control">
+        <form method="post" action="/simulator" class="wr-sim-form">
+            <label for="person_id">Select a person
+                <select id="person_id" name="person_id" required>
+                    <option value="" disabled {{ "selected" if not selected_person_id else "" }}>Choose a person…</option>
+                    {% for p in people %}
+                    <option value="{{ p.id }}" {{ "selected" if selected_person_id == p.id else "" }}>
+                        {{ p.name }}{% if p.role_title %} — {{ p.role_title }}{% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit">Run What If Simulation</button>
+        </form>
+    </article>
+
+    {% if result %}
+    <section class="wr-sim-results">
+        <!-- Before / after -->
+        <div class="wr-sim-banner">
+            <div class="wr-sim-side">
+                <span class="wr-sim-label">Current Organization Risk</span>
+                <span class="wr-badge wr-badge-{{ result.current_org_level }}">{{ result.current_org_level|capitalize }}</span>
+            </div>
+            <div class="wr-sim-arrow">→</div>
+            <div class="wr-sim-side">
+                <span class="wr-sim-label">Simulated Risk (if {{ result.person_name }} is unavailable)</span>
+                <span class="wr-badge wr-badge-{{ result.simulated_org_level }}">{{ result.simulated_org_level|capitalize }}</span>
+            </div>
+        </div>
+
+        <p class="wr-sim-count">
+            <strong>{{ result.affected_count }}</strong>
+            technology area{{ "s" if result.affected_count != 1 else "" }} affected if
+            {{ result.person_name }}{% if result.person_role %} ({{ result.person_role }}){% endif %}
+            is unavailable.
+        </p>
+
+        {% if result.affected_count == 0 %}
+        <p class="wr-empty">{{ result.person_name }} is not a primary person on any asset, so nothing would be directly affected.</p>
+        {% endif %}
+
+        {% for group_key in ["orphaned", "partially_affected", "unaffected"] %}
+            {% set items = result.affected_assets | selectattr("classification", "equalto", group_key) | list %}
+            {% if items %}
+            <section class="wr-sim-group">
+                <h2 class="wr-sim-group-head wr-sim-{{ group_key }}">{{ class_labels[group_key] }} <span class="wr-group-count">({{ items|length }})</span></h2>
+                <div class="wr-sim-card-grid">
+                    {% for a in items %}
+                    <article class="wr-sim-card wr-sim-card-{{ group_key }}">
+                        <div class="wr-sim-card-head">
+                            <a href="/assets/{{ a.asset_id }}"><strong>{{ a.asset_name }}</strong></a>
+                            <span class="wr-badge wr-badge-{{ a.simulated_level }}">{{ class_labels[group_key] }}</span>
+                        </div>
+                        <p class="wr-sim-explanation">{{ a.explanation }}</p>
+
+                        {% if a.lost_responsibilities %}
+                        <p class="wr-sim-detail"><strong>Lost:</strong> {{ a.lost_responsibilities | join(', ') }}</p>
+                        {% endif %}
+                        {% if a.uncertain_responsibilities %}
+                        <p class="wr-sim-detail"><strong>Uncertain:</strong> {{ a.uncertain_responsibilities | join(', ') }}</p>
+                        {% endif %}
+                        {% if a.covered_responsibilities %}
+                        <p class="wr-sim-detail"><strong>Covered:</strong> {{ a.covered_responsibilities | join('; ') }}</p>
+                        {% endif %}
+
+                        <div class="wr-sim-scores">
+                            <span>Current risk: <strong>{{ a.current_score }}</strong></span>
+                            <span class="wr-sim-arrow-sm">→</span>
+                            <span>Simulated risk: <strong>{{ a.simulated_score }}</strong></span>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        {% endfor %}
+    </section>
+    {% endif %}
+</section>
+{% endblock %}

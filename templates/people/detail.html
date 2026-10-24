@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ person.name }} — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-detail-page">
+    <div class="wr-detail-header">
+        <hgroup>
+            <h1>{{ person.name }}</h1>
+            <p>{{ person.role_title or "No role recorded" }}</p>
+        </hgroup>
+        <div class="wr-detail-actions">
+            <a href="/people/{{ person.id }}/edit" role="button" class="secondary">Edit</a>
+            <a href="/people/{{ person.id }}/delete" role="button" class="wr-danger">Delete</a>
+        </div>
+    </div>
+
+    {% if person.email %}
+    <p class="wr-muted">Contact: {{ person.email }}</p>
+    {% endif %}
+
+    {% if spof %}
+    <article class="wr-spof-warning">
+        <strong>Single point of failure</strong>
+        <p>{{ person.name }} is the only person for the following Critical/High assets with no backup:</p>
+        <ul>
+            {% for s in spof %}
+            <li>
+                <a href="/assets/{{ s.asset_id }}">{{ s.asset_name }}</a>
+                — {{ type_label(s.responsibility_type) }}
+                <span class="wr-badge wr-badge-{{ s.risk_level }}">{{ s.risk_level|capitalize }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </article>
+    {% endif %}
+
+    <section class="wr-detail-section">
+        <h2>Primary Responsibilities</h2>
+        {% if person.primary_responsibilities %}
+        <table class="wr-table">
+            <thead>
+                <tr><th>Asset</th><th>Responsibility</th><th>Backup</th></tr>
+            </thead>
+            <tbody>
+                {% for r in person.primary_responsibilities %}
+                <tr>
+                    <td><a href="/assets/{{ r.asset.id }}">{{ r.asset.name }}</a></td>
+                    <td>{{ type_label(r.responsibility_type) }}</td>
+                    <td>
+                        {{ status_label(r.backup_status) }}
+                        {% if r.backup_people %}
+                        ({{ r.backup_people | map(attribute='backup_person') | map(attribute='name') | join(', ') }})
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="wr-empty">No primary responsibilities.</p>
+        {% endif %}
+    </section>
+
+    <section class="wr-detail-section">
+        <h2>Backup Roles</h2>
+        {% if person.backup_roles %}
+        <table class="wr-table">
+            <thead>
+                <tr><th>Asset</th><th>Primary Person</th><th>Responsibility</th></tr>
+            </thead>
+            <tbody>
+                {% for rb in person.backup_roles %}
+                <tr>
+                    <td><a href="/assets/{{ rb.responsibility.asset.id }}">{{ rb.responsibility.asset.name }}</a></td>
+                    <td>{{ rb.responsibility.primary_person.name }}</td>
+                    <td>{{ type_label(rb.responsibility.responsibility_type) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="wr-empty">Not a backup for any responsibility.</p>
+        {% endif %}
+    </section>
+
+    <a href="/people">← Back to People</a>
+</section>
+{% endblock %}

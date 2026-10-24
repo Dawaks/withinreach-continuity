@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Not Found — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-placeholder-page">
+    <hgroup>
+        <h1>Not Found</h1>
+        <p>We couldn't find that {{ what }}.</p>
+    </hgroup>
+    <a href="{{ back_url }}" role="button" class="secondary">Go back</a>
+</section>
+{% endblock %}

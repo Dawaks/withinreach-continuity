@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Dependency Map — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-map-page">
+    <hgroup>
+        <h1>Technology Dependency Map</h1>
+        <p>See who your organization depends on and where single points of failure may exist.</p>
+    </hgroup>
+
+    <div class="wr-map-layout">
+        <div class="wr-map-main">
+            <div id="wr-cy" class="wr-cy"></div>
+
+            <div class="wr-legend">
+                <div class="wr-legend-group">
+                    <strong>Nodes</strong>
+                    <span><span class="wr-legend-dot wr-legend-person"></span> Person</span>
+                    <span><span class="wr-legend-sq wr-legend-asset"></span> Technology Asset</span>
+                    <span><span class="wr-legend-bar"></span> Organizational Function</span>
+                </div>
+                <div class="wr-legend-group">
+                    <strong>Edges</strong>
+                    <span><span class="wr-legend-line wr-legend-solid"></span> Primary responsibility</span>
+                    <span><span class="wr-legend-line wr-legend-dashed"></span> Backup relationship</span>
+                </div>
+                <div class="wr-legend-group">
+                    <strong>Risk / backup</strong>
+                    <span><span class="wr-legend-line wr-color-critical"></span> No backup</span>
+                    <span><span class="wr-legend-line wr-color-medium"></span> Backup unknown</span>
+                    <span><span class="wr-legend-line wr-color-low"></span> Has backup</span>
+                </div>
+                <p class="wr-legend-note">
+                    Larger, red people are major concentrations of knowledge.
+                    Red-bordered assets are the highest continuity risk.
+                </p>
+            </div>
+        </div>
+
+        <aside class="wr-map-side">
+            <h2>Key Dependency Risks</h2>
+            {% if spof %}
+            <ul class="wr-spof-list">
+                {% for s in spof %}
+                <li class="wr-spof-item">
+                    <a href="/people/{{ s.person_id }}" class="wr-spof-name">{{ s.person_name }}</a>
+                    {% if s.role %}<span class="wr-muted">{{ s.role }}</span>{% endif %}
+                    <div class="wr-spof-stats">
+                        <span>{{ s.important_asset_count }} important system{{ "s" if s.important_asset_count != 1 else "" }}</span>
+                        {% if s.uncovered_count %}
+                        <span class="wr-spof-uncovered">{{ s.uncovered_count }} with no backup</span>
+                        {% endif %}
+                    </div>
+                    <ul class="wr-spof-assets">
+                        {% for a in s.assets %}
+                        <li>
+                            <a href="/assets/{{ a.asset_id }}">{{ a.name }}</a>
+                            <span class="wr-badge wr-badge-{{ a.level }}">{{ a.level|capitalize }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="wr-empty">No major dependency concentrations detected.</p>
+            {% endif %}
+        </aside>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+<script src="{{ url_for('static', path='js/dependency_map.js') }}"></script>
+{% endblock %}

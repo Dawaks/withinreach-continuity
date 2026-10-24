@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Assets — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-list-page">
+    <div class="wr-list-header">
+        <hgroup>
+            <h1>Technology Assets</h1>
+            <p>The technology and services your organization relies on.</p>
+        </hgroup>
+        <a href="/assets/new" role="button">Add Asset</a>
+    </div>
+
+    {% if rows %}
+    <div class="wr-asset-grid">
+        {% for row in rows %}
+        <a href="/assets/{{ row.asset.id }}" class="wr-asset-card">
+            <div class="wr-asset-card-head">
+                <strong>{{ row.asset.name }}</strong>
+                <span class="wr-badge wr-badge-{{ row.risk.risk_level }}">{{ row.risk.score }}</span>
+            </div>
+            <span class="wr-category">{{ row.category_label }}</span>
+            <div class="wr-asset-card-meta">
+                <span class="wr-pill">{{ row.asset.criticality|capitalize }}</span>
+                <span class="wr-muted">Risk: {{ row.risk.risk_level|capitalize }}</span>
+            </div>
+            {% if row.asset.description %}
+            <p class="wr-asset-desc">{{ row.asset.description }}</p>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="wr-empty">No assets yet. Start the Guided Discovery interview or add assets to begin.</p>
+    {% endif %}
+</section>
+{% endblock %}

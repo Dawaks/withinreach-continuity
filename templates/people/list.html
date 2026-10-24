@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}People — WithinReach Continuity{% endblock %}
+
+{% block content %}
+<section class="wr-list-page">
+    <div class="wr-list-header">
+        <hgroup>
+            <h1>People</h1>
+            <p>Everyone involved with your organization's technology.</p>
+        </hgroup>
+        <a href="/people/new" role="button">Add Person</a>
+    </div>
+
+    {% if rows %}
+    <table class="wr-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role / Title</th>
+                <th>Primary Responsibilities</th>
+                <th>Backup Responsibilities</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td><a href="/people/{{ row.person.id }}">{{ row.person.name }}</a></td>
+                <td>{{ row.person.role_title or "—" }}</td>
+                <td>{{ row.primary_count }}</td>
+                <td>{{ row.backup_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="wr-empty">No people yet. Start the Guided Discovery interview or add people to begin.</p>
+    {% endif %}
+</section>
+{% endblock %}
