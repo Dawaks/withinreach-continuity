@@ -2,42 +2,46 @@
 
 **Find hidden technology dependencies and single points of failure before they become emergencies.**
 
-WithinReach Continuity is an AI-assisted technology dependency and continuity mapper for small community organizations — churches, nonprofits, student groups, and family businesses.
+WithinReach Continuity helps small organizations understand which people their technology depends on and what could happen if those people are unavailable.
 
 ## Demo Video
 
-([Watch the WithinReach Continuity demo](https://youtu.be/D3Y-yMP7bXE))
+[Watch the WithinReach Continuity demo](https://youtu.be/D3Y-yMP7bXE)
 
 ---
 
 ## The Problem
 
-Small organizations rely on technology — livestreaming, websites, social media, Wi-Fi, shared files, online giving — but the knowledge of how to operate and recover that technology usually lives with one or two people. When that person is unavailable (illness, moving away, stepping down), the organization discovers too late that nobody else can run the livestream, the domain is under someone's personal email, or critical files live on a single laptop. The result is lost services and, sometimes, permanently lost digital assets.
+Small organizations rely on technology for things like livestreaming, websites, social media, Wi-Fi, shared files, online giving, and day-to-day communication. The problem is that the knowledge of how to manage these systems often sits with only one or two people.
 
-Most coordinators are not IT professionals and would not know what to enter into a blank form. They need a guided tool that surfaces these risks in plain language and tells them what to do next.
+If that person becomes unavailable because of illness, relocation, stepping down, or any unexpected situation, the organization may suddenly realize that nobody else knows how to run the livestream, access an important platform, or recover a critical service.
+
+Many small organizations also do not have dedicated IT staff, so they need a simple way to understand these dependencies without using technical language.
 
 ## The Solution
 
-WithinReach Continuity helps an organization map its technology dependencies and automatically identifies:
+WithinReach Continuity helps organizations map their technology, identify who is responsible for it, and find areas where too much knowledge or responsibility depends on one person.
 
-- **Technology dependencies** — who relies on what
-- **Single points of failure** — responsibilities with no backup
-- **Missing backup coverage** — unknown or absent backups
-- **Missing documentation** — knowledge that lives only in someone's head
-- **Personal-account dependencies** — services tied to a personal (not organization-owned) account
-- **Single-device dependencies** — services that rely on one specific device
+It helps identify:
 
-It then produces an explainable risk score, a visual dependency map, a "What If?" simulator, and prioritized recommendations.
+- **Technology dependencies** - who is responsible for each system or service
+- **Single points of failure** - responsibilities with no backup person
+- **Missing backup coverage** - situations where backup support is missing or unclear
+- **Missing documentation** - important processes that are not written down
+- **Personal-account dependencies** - services tied to someone's personal account instead of an organization-owned account
+- **Single-device dependencies** - systems that rely on one specific device
+
+The application then provides a risk score, a visual dependency map, a "What If?" simulator, and practical recommendations.
 
 ## Key Features
 
-- **Explainable risk scoring** — a deterministic 0–100 score per asset with a visible breakdown of every contributing factor. No black box, no AI involved in scoring.
-- **Dependency map** — an interactive People → Assets → Functions graph that makes concentrations of knowledge and single points of failure visually obvious.
-- **What If? simulator** — select a person and instantly see which services would be unaffected, partially affected, or orphaned if they became unavailable.
-- **Guided discovery** — a plain-language interview that turns simple answers into proposed records for the user to review and confirm.
-- **AI-assisted recommendations** — optional Amazon Bedrock assistance that turns the risk profile into specific, actionable advice.
-- **Rule-based fallback** — every AI feature has a fallback that works with no AI configured, so the product is fully usable offline.
-- **Credential-safe design** — the application never asks for or stores passwords, keys, tokens, Wi-Fi passwords, or recovery codes, and blocks accidental secret entry.
+- **Explainable risk scoring** - each technology asset receives a 0-100 risk score with a clear breakdown of the factors that contributed to it.
+- **Dependency map** - an interactive People → Assets → Functions view that makes it easier to see where responsibilities are concentrated.
+- **What If? simulator** - select a person and see which services would remain covered, become partially affected, or be left without support if that person became unavailable.
+- **Guided discovery** - a simple interview that helps users enter dependency information without needing technical expertise.
+- **Optional AI assistance** - Amazon Bedrock can help interpret responses and generate continuity recommendations when enabled.
+- **Rule-based fallback** - the main features still work when AI is disabled.
+- **Credential-safe design** - the application does not need passwords, API keys, tokens, Wi-Fi passwords, or recovery codes.
 
 ## Architecture
 
@@ -46,24 +50,25 @@ It then produces an explainable risk score, a visual dependency map, a "What If?
 | Backend | FastAPI (Python) |
 | Templates | Jinja2 server-rendered pages |
 | Database | SQLite via SQLAlchemy |
-| Visualization | Cytoscape.js (via CDN) |
-| AI (optional) | Amazon Bedrock via `boto3` |
-| Risk engine | Deterministic, server-side, fully unit-tested |
+| Visualization | Cytoscape.js |
+| AI assistance | Amazon Bedrock via `boto3` |
+| Risk engine | Deterministic, server-side scoring |
 
-The code follows a clean `routes → services → data/models` separation. Risk scores are always computed on demand from current data and never stored.
+Risk scores are calculated from the current organization data and are not generated by AI.
 
-## AI Design
+## AI Use
 
-- **AI is optional.** The application runs fully with `AI_ENABLED=false`.
-- **Structured fallback works without AI.** The guided interview and recommendations both have rule-based paths.
-- **AI never controls risk scoring.** Scoring is deterministic and server-side.
-- **The user reviews AI proposals.** AI-suggested interview records are proposals only — nothing is saved until the user confirms.
-- **Secret validation runs before any Bedrock transmission.** Free text is checked for likely credentials first; blocked input is never sent to the model. The flow is strictly `user input → secret validation → Bedrock`.
-- **The Bedrock model is configurable.** The model ID and region come from environment variables; if the model is unavailable, the app falls back gracefully.
+AI is optional in WithinReach Continuity.
+
+When enabled, Amazon Bedrock can assist with interpreting natural-language answers from the guided discovery process and generating continuity recommendations. The user still reviews proposed information before it is saved.
+
+The core risk scoring, dependency mapping, and What If simulation do not depend on AI. If AI is unavailable or disabled, the application continues to work using the structured workflow and rule-based recommendations.
+
+Before any free-text input is sent to Bedrock, it is checked for likely credentials or secrets.
 
 ## Security
 
-WithinReach Continuity does **not** require and will **not** store:
+WithinReach Continuity does not require or store:
 
 - passwords
 - API keys
@@ -72,52 +77,90 @@ WithinReach Continuity does **not** require and will **not** store:
 - recovery codes
 - Wi-Fi passwords
 
-Free-text fields are validated server-side to block likely credential values (for example `password is …`), while allowing benign security vocabulary (for example "Password reset procedure is documented in the IT binder."). User-provided content is rendered with Jinja2 autoescaping, and length limits bound every input.
+Free-text fields are checked server-side to help prevent accidental credential entry. User-provided content is also rendered with Jinja2 autoescaping, and reasonable input length limits are applied.
 
 ## Running Locally
 
 1. **Clone the repository**
-   ```bash
-   git clone <your-repository-url>
-   cd withinreach-continuity
-   ```
+
+```bash
+git clone https://github.com/Dawaks/withinreach-continuity.git
+cd withinreach-continuity
+```
 
 2. **Create a virtual environment**
-   ```bash
-   python -m venv .venv
-   # Windows
-   .venv\Scripts\activate
-   # macOS / Linux
-   source .venv/bin/activate
-   ```
+
+```bash
+python -m venv .venv
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+macOS / Linux:
+
+```bash
+source .venv/bin/activate
+```
 
 3. **Install requirements**
-   ```bash
-   pip install -r requirements.txt
-   ```
 
-4. **(Optional) configure environment**
-   ```bash
-   cp .env.example .env
-   ```
-   Defaults work out of the box. AI is disabled by default (`AI_ENABLED=false`).
+```bash
+pip install -r requirements.txt
+```
+
+4. **Optional: configure environment variables**
+
+```bash
+cp .env.example .env
+```
+
+AI is disabled by default with:
+
+```text
+AI_ENABLED=false
+```
 
 5. **Start the server**
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+
+```bash
+uvicorn app.main:app --reload
+```
 
 6. **Open the app**
 
-   Visit `http://127.0.0.1:8000` in your browser. On first run, the sample Grace Community Church dataset is seeded automatically.
+Visit:
+
+```text
+http://127.0.0.1:8000
+```
+
+On first run, the sample Grace Community Church dataset is seeded automatically.
 
 ## Demo Dataset
 
-The application ships with a fictional demo organization, **Grace Community Church** (4 people, 8 technology assets, with intentional continuity gaps so the value is immediately visible). It contains no real people or credentials. You can restore it at any time from the dashboard via **Reset to demo data**.
+The application includes a fictional demo organization called **Grace Community Church** with 4 people and 8 technology assets.
+
+The dataset contains intentional continuity gaps so the main features can be demonstrated clearly. It does not contain real people or credentials.
+
+You can restore the sample data at any time using **Reset to demo data** from the dashboard.
 
 ## Testing
 
-The project includes an automated test suite (`pytest`) covering risk scoring, backup relationships, the What If simulator, the dependency-map data, the guided interview, AI fallback behavior, and security controls. Bedrock is mocked in tests — no live AWS access is required.
+The project includes automated tests using `pytest` for:
+
+- risk scoring
+- backup relationships
+- the What If simulator
+- dependency-map data
+- guided discovery
+- AI fallback behavior
+- security controls
+
+Run the tests with:
 
 ```bash
 pytest
